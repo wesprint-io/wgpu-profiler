@@ -35,7 +35,7 @@ fn collect_stream_info_recursive(
             stream_info.depth = stream_info.depth.max(depth);
             stream_info.num_scopes += 1;
             stream_info.range_ns.0 = stream_info.range_ns.0.min(start);
-            stream_info.range_ns.1 = stream_info.range_ns.0.max(end);
+            stream_info.range_ns.1 = stream_info.range_ns.1.max(end);
 
             let (offset, _) = stream_info.stream.begin_scope(|| start, id, "");
             collect_stream_info_recursive(profiler, stream_info, &query.nested_queries, depth + 1);

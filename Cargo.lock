@@ -1401,14 +1401,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fa9dae7b05c02ec1a6bc9bcf20d8bc64a7dcbf57934107902a872014899b741f"
 dependencies = [
  "anyhow",
- "bincode",
  "byteorder",
  "cfg-if",
  "itertools 0.10.5",
- "lz4_flex",
  "once_cell",
  "parking_lot",
- "serde",
 ]
 
 [[package]]
@@ -1417,23 +1414,25 @@ version = "0.19.1"
 source = "git+https://github.com/wesprint-io/puffin?rev=a92cfd8bb7356e5ba4afff005d117ce3dccbc4dc#a92cfd8bb7356e5ba4afff005d117ce3dccbc4dc"
 dependencies = [
  "anyhow",
+ "bincode",
  "byteorder",
  "cfg-if",
  "itertools 0.14.0",
+ "lz4_flex",
  "parking_lot",
+ "serde",
 ]
 
 [[package]]
 name = "puffin_http"
 version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "739a3c7f56604713b553d7addd7718c226e88d598979ae3450320800bd0e9810"
+source = "git+https://github.com/wesprint-io/puffin?rev=a92cfd8bb7356e5ba4afff005d117ce3dccbc4dc#a92cfd8bb7356e5ba4afff005d117ce3dccbc4dc"
 dependencies = [
  "anyhow",
  "crossbeam-channel",
  "log",
  "parking_lot",
- "puffin 0.19.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "puffin 0.19.1 (git+https://github.com/wesprint-io/puffin?rev=a92cfd8bb7356e5ba4afff005d117ce3dccbc4dc)",
 ]
 
 [[package]]

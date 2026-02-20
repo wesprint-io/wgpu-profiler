@@ -323,7 +323,7 @@ fn draw(
                 label: None,
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view,
-                    // depth_slice: None,
+                    depth_slice: None,
                     resolve_target: None,
                     ops: wgpu::Operations {
                         load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
@@ -359,7 +359,7 @@ fn draw(
                 label: None,
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view,
-                    // depth_slice: None,
+                    depth_slice: None,
                     resolve_target: None,
                     ops: wgpu::Operations {
                         load: wgpu::LoadOp::Load,
@@ -410,13 +410,26 @@ fn main() {
     #[cfg(feature = "puffin")]
     let (_cpu_server, _gpu_server) = {
         puffin::set_scopes_on(true);
-        let cpu_server =
-            puffin_http::Server::new(&format!("0.0.0.0:{}", puffin_http::DEFAULT_PORT)).unwrap();
-        let gpu_server = puffin_http::Server::new_custom(
-            &format!("0.0.0.0:{}", puffin_http::DEFAULT_PORT + 1),
+        let cpu_bind_addr = format!("0.0.0.0:{}", puffin_http::DEFAULT_PORT);
+        let gpu_bind_addr = format!("0.0.0.0:{}", puffin_http::DEFAULT_PORT + 1);
+        let cpu_server = match puffin_http::Server::new(&cpu_bind_addr) {
+            Ok(server) => Some(server),
+            Err(err) => {
+                eprintln!("Failed to start Puffin CPU server on {cpu_bind_addr}: {err}");
+                None
+            }
+        };
+        let gpu_server = match puffin_http::Server::new_custom(
+            &gpu_bind_addr,
             |sink| PUFFIN_GPU_PROFILER.lock().unwrap().add_sink(sink),
             |id| _ = PUFFIN_GPU_PROFILER.lock().unwrap().remove_sink(id),
-        );
+        ) {
+            Ok(server) => Some(server),
+            Err(err) => {
+                eprintln!("Failed to start Puffin GPU server on {gpu_bind_addr}: {err}");
+                None
+            }
+        };
         (cpu_server, gpu_server)
     };
     let _ = event_loop.run_app(&mut State::default());
